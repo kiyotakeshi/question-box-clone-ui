@@ -1,22 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { For } from 'react-loops';
 import { Card } from 'semantic-ui-react';
 import Question from './question';
 import axios from 'axios';
+import { QuestionContext } from '../../context/QuestionContext';
 
 const List = () => {
+    const { list, setList } = useContext(QuestionContext);
+
     const initState = {
-        list: [],
+        // list: [],
         showingDetail: false,
         detail: null,
     };
 
     const [state, setState] = useState(initState);
-    const { list, showingDetail, detail } = state;
+    // const { list, showingDetail, detail } = state;
+    const { showingDetail, detail } = state;
 
     useEffect(() => {
         axios.get(`/list`).then((res) => {
-            setState({ ...state, list: res.data });
+            // setState({ ...state, list: res.data });
+            setList(res.data);
         });
     }, []);
 
@@ -25,7 +30,17 @@ const List = () => {
             <Card.Group>
                 <For of={list}>
                     {(question) => (
-                        <Question key={question.id} item={question} />
+                        // {debugger}
+                        // console.log(question)
+                        // <Question key={question.id} item={question} />
+                        <Question key={question.id} />
+                        // <Card key={question.id}>
+                        //     <Card.Content
+                        //         header={question.questioner}
+                        //         meta={question.answered ? '回答済み' : '未回答'}
+                        //         description={question.post}
+                        //     />
+                        // </Card>
                     )}
                 </For>
             </Card.Group>
